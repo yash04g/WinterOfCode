@@ -95,6 +95,18 @@ public:
 		}
 		return cnt;
 	}
+	void DFSHelper(int node,vector<bool> &visited,list<int> &ordering){
+		visited[node] = true;
+		for(auto neighbour:adjList[node]){
+			if(!visited[neighbour]){
+				DFSHelper(neighbour,visited,ordering);
+			}
+		}
+		// At this point all the children of current node have been visited
+		// So we can add current node to the list
+		ordering.push_front(node);
+
+	}
 };
 
 int main(){
@@ -106,11 +118,12 @@ int main(){
 	g.addEdge(2,3);
 	g.addEdge(5,3);
 	g.addEdge(4,3);
+
 	g.printAdjList();
 	g.bfs(0);
 	g.sssp_bfs(0);
 	g.dfs(0);
 	int ans = g.connected_components(0);
-	cout<<ans<<endl;
+	cout<<endl<<ans<<endl;
 
 }
