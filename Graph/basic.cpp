@@ -105,7 +105,57 @@ public:
 		// At this point all the children of current node have been visited
 		// So we can add current node to the list
 		ordering.push_front(node);
+	}
+	bool isCyclicBFS(int src){
+		vector<bool> visited(V,0);
+		vector<int> parent(V,-1);
+		queue<int> q;
 
+		visited[src] = true;
+		parent[src] = src;
+		q.push(src);
+		while(!q.empty()){
+			auto node = q.front();
+			q.pop();
+			for(auto neighbour : adjList[node]){
+				if(visited[neighbour] && parent[node]!=neighbour){
+					return true;
+				}else{
+					visited[neighbour] = true;
+					parent[node] = neighbour;
+					q.push(neighbour);
+				}
+			}
+		}
+		return false;
+	}
+	bool isCyclicHelper(int node,vector<bool> &visited,int parent){
+		visited[node] = true;
+		for(auto neighbour : adjList[node]){
+			if(!visited[neighbour]){
+				bool ans = isCyclicHelper(neighbour,visited,node);
+				if(ans){
+					return true;
+				}
+			}
+			// If neighbour is already visited and is not the parent
+			else if(neighbour!=parent){
+				return true;
+			}
+		}
+		return false;
+	}
+	bool isCyclicDFS(int src){
+		vector<bool> visited(V,0);
+		for(int i=0;i<V;i++){
+			if(!visited[i]){
+				bool ans = isCyclicHelper(i,visited,i);
+				if(ans){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 };
 
@@ -125,5 +175,7 @@ int main(){
 	g.dfs(0);
 	int ans = g.connected_components(0);
 	cout<<endl<<ans<<endl;
+	cout<<g.isCyclicBFS(0)<<endl;
+	cout<<g.isCyclicDFS(0)<<endl;
 
 }
