@@ -42,11 +42,10 @@ int coinChange(int n,int *d,int numD){
 int coinChangeDP(int n,int *d,int numD){
 	memset(dp,-1,sizeof(dp));
 	
-	fo(i,n) dp[i][0] = 0;
 	fo(i,numD) dp[0][i] = 1;
 
 	Fo(i,1,n+1){
-		Fo(j,1,numD){
+		Fo(j,0,numD){
 			int x,y;
 			// Denomination Included
 			if(i-d[j]>=0){
@@ -55,11 +54,15 @@ int coinChangeDP(int n,int *d,int numD){
 				x = 0;
 			}
 			// Not included
-			y = dp[i][j-1];
+			if(j>=1){
+				y = dp[i][j-1];
+			}else{
+				y = 0;
+			}
 			dp[i][j] = x+y;
 		}
 	}
-	return dp[n][numD];
+	return dp[n][numD-1];
 
 }
 
