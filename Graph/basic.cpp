@@ -51,7 +51,7 @@ public:
 
 		q.push(src);
 		distance[src] = 0;
-		distance[src] = src;
+		parent[src] = src;
 		
 		while(!q.empty()){
 			int node = q.front();
