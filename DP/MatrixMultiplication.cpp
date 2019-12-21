@@ -26,41 +26,39 @@ void get_it_done(){
 	cin.tie(0);
 	cout.tie(0);
 }
-const int N = 5e2+5;
-int dp[505][105];
+const int N = 1e3+5;
+int dp[N][N];
 
-int gcd(int a,int b){
-	if(a==0) return b;
-	return gcd(b%a,a);
-}
-
-int count(vi &a,int n){
-	memset(dp,0,sizeof(dp));
-	fo(i,n){
-		dp[i][0] = 0;
+int matrixMultiply(vi &a,int i,int j){
+	if(i==j){
+		return dp[i][j] = 0;
 	}
-	dp[0][a[0]] = 1;
+	if(dp[i][j]!=-1) return dp[i][j];
+	int ans = INT_MAX;
+	for(int k=i;k<j;++k){
+		int temp = matrixMultiply(a,i,k)+matrixMultiply(a,k+1,j)+a[i-1]*a[k]*a[j];
+		ans = min(ans,temp);
+	}
+	return dp[i][j] = ans;
+}
+int mcmDP(vi &a){
+	memset(dp,-1,sizeof(dp));
+	int n = a.size();
 	for(int i=1;i<n;i++){
-		dp[i][a[i]] += 1;
-		for(int j=i;j>=0;j--){
-			if(a[j]<a[i]){
-				for(int g=1;g<=100;g++){
-					if(dp[j][g]>0){
-						int newg = gcd(g,a[i]);
-						dp[i][newg] = (dp[i][newg]+dp[j][g])%mod;
-					}
-				}
+		dp[i][i] = 0;
+	}
+	for(int len = 2;len<n;len++){
+		for(int i=1;i<=n-len;++i){
+			int j = i+len-1;
+			dp[i][j] = INT_MAX;
+			for(int k=i;k<j;k++){
+				int newAns = dp[i][k]+dp[k+1][j] + a[i-1]*a[k]*a[j];
+				dp[i][j] = min(dp[i][j],newAns);
 			}
 		}
 	}
-	int ans = 0;
-	fo(i,n){
-		ans = (ans+dp[i][1])%mod;
-	}	
-	return ans;
-
+	return dp[1][n-1];
 }
-	
 
 int32_t main(){
 	get_it_done();
@@ -68,10 +66,11 @@ int32_t main(){
     // cin >> t;
     while (t--){
 		int n;
-		cin>>n; 
+		cin>>n;
 		vi a(n);
-		fo(u,n) cin>>a[u];
-		int ans = count(a,n);
-		cout<<ans<<endl;
+		fo(i,n) cin>>a[i];
+		memset(dp,-1,sizeof(dp));
+		cout<<matrixMultiply(a,1,n-1)<<endl;		
+		cout<<mcmDP(a)<<endl;
     }
 }

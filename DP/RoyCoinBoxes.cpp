@@ -26,52 +26,46 @@ void get_it_done(){
 	cin.tie(0);
 	cout.tie(0);
 }
-const int N = 5e2+5;
-int dp[505][105];
+const int N = 2e5+5;
+int dp[N];
 
-int gcd(int a,int b){
-	if(a==0) return b;
-	return gcd(b%a,a);
-}
-
-int count(vi &a,int n){
-	memset(dp,0,sizeof(dp));
-	fo(i,n){
-		dp[i][0] = 0;
-	}
-	dp[0][a[0]] = 1;
-	for(int i=1;i<n;i++){
-		dp[i][a[i]] += 1;
-		for(int j=i;j>=0;j--){
-			if(a[j]<a[i]){
-				for(int g=1;g<=100;g++){
-					if(dp[j][g]>0){
-						int newg = gcd(g,a[i]);
-						dp[i][newg] = (dp[i][newg]+dp[j][g])%mod;
-					}
-				}
-			}
-		}
-	}
-	int ans = 0;
-	fo(i,n){
-		ans = (ans+dp[i][1])%mod;
-	}	
-	return ans;
-
-}
-	
 
 int32_t main(){
 	get_it_done();
     int t=1;
     // cin >> t;
     while (t--){
-		int n;
-		cin>>n; 
-		vi a(n);
-		fo(u,n) cin>>a[u];
-		int ans = count(a,n);
-		cout<<ans<<endl;
+    	int n,m;
+    	cin>>n>>m;
+    	vi boxes(n+1,0);
+    	vi start(n+1,0);
+    	vi end(n+1,0);
+    	while(m--){
+    		int l,r;
+    		cin>>l>>r;
+    		start[l] += 1;
+    		end[r] += 1;
+    	}
+    	boxes[1] = start[1];
+    	Fo(i,2,n+1){
+    		boxes[i] = boxes[i-1]+start[i]-end[i-1];
+    	}
+    	// int s = 1e6+5;
+    	vi cnt(n+1,0);
+    	fo(i,n+1){
+    		cnt[boxes[i]]++;
+    	}
+    	vi atleast(n+1,0);
+    	atleast[n] = cnt[n];
+    	for(int i=n-1;i>0;i--){
+    		atleast[i] = atleast[i+1]+cnt[i];
+    	}
+    	int q;
+    	cin>>q;
+    	while(q--){
+    		int count;
+    		cin>>count;
+    		cout<<atleast[count]<<endl;
+    	}
     }
 }

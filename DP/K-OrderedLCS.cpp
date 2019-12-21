@@ -26,52 +26,47 @@ void get_it_done(){
 	cin.tie(0);
 	cout.tie(0);
 }
-const int N = 5e2+5;
-int dp[505][105];
+const int N = 2e3+5;
+int dp[N][N][8];
+vi x,y;
+int m,n;
 
-int gcd(int a,int b){
-	if(a==0) return b;
-	return gcd(b%a,a);
-}
 
-int count(vi &a,int n){
-	memset(dp,0,sizeof(dp));
-	fo(i,n){
-		dp[i][0] = 0;
+int kOrderedlcs(int i,int j,int k){
+	if(i==m || j==n) return 0;
+	if(dp[i][j][k]!=-1) return dp[i][j][k];
+	int res = 0;
+	if(x[i]==y[j]){
+		res = 1+kOrderedlcs(i+1,j+1,k);
 	}
-	dp[0][a[0]] = 1;
-	for(int i=1;i<n;i++){
-		dp[i][a[i]] += 1;
-		for(int j=i;j>=0;j--){
-			if(a[j]<a[i]){
-				for(int g=1;g<=100;g++){
-					if(dp[j][g]>0){
-						int newg = gcd(g,a[i]);
-						dp[i][newg] = (dp[i][newg]+dp[j][g])%mod;
-					}
-				}
-			}
+	else{ 
+		if(k>0){
+			res = 1+kOrderedlcs(i+1,j+1,k-1);
 		}
+		res = max(res,kOrderedlcs(i+1,j,k));
+		res = max(res,kOrderedlcs(i,j+1,k));
 	}
-	int ans = 0;
-	fo(i,n){
-		ans = (ans+dp[i][1])%mod;
-	}	
-	return ans;
-
+	return dp[i][j][k] = res; 
 }
-	
 
 int32_t main(){
 	get_it_done();
     int t=1;
     // cin >> t;
     while (t--){
-		int n;
-		cin>>n; 
-		vi a(n);
-		fo(u,n) cin>>a[u];
-		int ans = count(a,n);
-		cout<<ans<<endl;
+    	int k;
+    	cin>>m>>n>>k;
+    	fo(i,m){
+    		int temp;
+    		cin>>temp;
+    		x.pb(temp);
+    	}
+    	fo(i,n){
+    		int temp;
+    		cin>>temp;
+    		y.pb(temp);	
+    	}
+    	memset(dp,-1,sizeof(dp));
+    	cout<<kOrderedlcs(0,0,k)<<endl;
     }
 }
