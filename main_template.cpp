@@ -4,6 +4,8 @@
 using namespace std;
 
 #define int long long
+#define ff first
+#define ss second
 #define loop(i,k,n) for(int i=k;i<n;++i)
 #define rloop(i,n,k) for(int i=n;i>=k;i--)
 #define vi vector<int>
@@ -17,6 +19,7 @@ using namespace std;
 #define deb(x) cout<<#x<<" "<<x<<endl;
 #define mp make_pair
 #define pb push_back
+#define sb __builtin_popcount
 #define mod 1000000007  
 #define endl "\n"
 #define inf 1e18
