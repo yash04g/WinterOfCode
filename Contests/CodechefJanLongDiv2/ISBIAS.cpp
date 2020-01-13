@@ -27,99 +27,76 @@ void get_it_done(){
 	cout.tie(0);
 }
 const int N = 1e5+5;
-int dp1[N];
-int dp2[N];
-
-
-
+int n,q;
+int a[N],dp1[N],dp2[N];
 int32_t main(){
 	get_it_done();
     int t=1;
     // cin >> t;
     while (t--){
-		int n,q;
-		cin>>n>>q;
-		vi a(n);
-		loop(i,0,n) cin>>a[i];
-		int fwd[N];
-		int rev[N];
-		fwd[0] = 0;
-		int cnt = 1;
+    	cin>>n>>q;
+    	loop(i,1,n+1) cin>>a[i];
+    	memset(dp1,0,sizeof(dp1));
+    	memset(dp2,0,sizeof(dp2));
+		int curr = 0, prev = 0;
+		int inc = 0, dec = 0;
 		loop(i,1,n){
-			if(a[i]>a[i-1]){
-				cnt+=1;
+			prev = curr;
+			if(a[i]<a[i+1]){
+				curr = 1;
+			}
+			else{
+				curr = 0;
+			}
+			if(curr == 1 && prev == 0){
+				inc++;
+			}
+			dp1[i+1] = inc;
+		}
+		curr = 1, prev = 1;
+		loop(i,1,n){
+			prev = curr;
+			if(a[i]>a[i+1]){
+				curr = 0;
 			}else{
-				fwd[i-1] = cnt;
-				cnt = 1;
+				curr = 1;
 			}
-		}
-		fwd[n-1] = cnt;
-		vi prefixSum1(n,0);
-		dp1[0] = 0;
-		loop(i,1,n){
-			dp1[i] = dp1[i-1];
-			if(fwd[i]>1){
-				dp1[i]+=1;
+			if(curr == 0 && prev == 1){
+				dec++;
 			}
+			dp2[i+1] = dec;
 		}
-		loop(i,0,n){
+		loop(i,1,n+1){
 			cout<<dp1[i]<<" ";
 		}
-		// exit(0);
 		cout<<endl;
-
-		prefixSum1[0] = 0;
-		loop(i,1,n){
-			prefixSum1[i] = prefixSum1[i-1]+dp1[i]; 
-		}
-		reverse(all(a));
-		rev[0] = 0;
-		cnt = 1;
-		loop(i,1,n){
-			if(a[i]>a[i-1]){
-				cnt+=1;
-			}else{
-				rev[i-1] = cnt;
-				cnt = 1;
-			}
-		}
-		rev[n-1] = cnt;
-		dp2[0] = 0;
-		loop(i,1,n){
-			dp2[i] = dp2[i-1];
-			if(rev[i]>1){
-				dp2[i]+=1;
-			}
-		}
-		reverse(dp2,dp2+n);
-		loop(i,0,n){
+		loop(i,1,n+1){
 			cout<<dp2[i]<<" ";
 		}
-		// exit(0);
-		// vi prefixSum2(n,0);
-		// prefixSum2[0] = 0;
-		// loop(i,1,n){
-		// 	prefixSum2[i] = prefixSum2[i-1]+dp2[i];
-		// }
-		// loop(i,0,n){
-		// 	cout<<prefixSum1[i]<<" ";
-		// }
-		// cout<<endl;
-		// loop(i,0,n){
-		// 	cout<<prefixSum2[i]<<" ";
-		// }
-		// exit(0);
-		while(q--){
-			int l,r;
-			cin>>l>>r;
-			l--;r--;
-			int cnt1 = dp1[r]-dp1[l];
-			int cnt2 = abs(dp2[r]-dp2[l]);
-			// cout<<cnt1<<" "<<cnt2<<endl;
-			if(cnt1==cnt2) cout<<"YES"<<endl;
-			else cout<<"NO"<<endl;
-		}
 
+		while(q--){
+			int l,r; 
+			cin>>l>>r;
+			int cnt1=0,cnt2=0;
+			if(l+1 == r){
+				cout<<"NO"<<endl;
+				continue;
+			}
+			cnt1 = dp1[r] - dp1[l];
+			cnt2 = dp2[r] - dp2[l];
+			if(dp1[l] == dp1[l+1] && a[l] < a[l+1]){
+				cnt1++;
+			}
+			if(dp2[l] == dp2[l+1] && a[l] > a[l+1]){
+				cnt2++;
+			}
+			
+			if(cnt1==cnt2){
+				cout<<"YES"<<endl;
+			}else{
+				cout<<"NO"<<endl;
+			}
+		}
 
     }
 }

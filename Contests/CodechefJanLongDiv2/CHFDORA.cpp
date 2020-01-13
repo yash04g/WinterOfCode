@@ -36,8 +36,10 @@ int gcd(int a, int b){
 void swap(int &a,int &b){
 	a^=b;b^=a;a^=b;
 }
-const int N = 2e5+5;
+const int N = 1e4+5;
 int dp[N];
+int n,m;
+
 
 
 int32_t main(){
@@ -45,7 +47,43 @@ int32_t main(){
     int t=1;
     cin >> t;
     while (t--){
-		    	
+        cin>>n>>m;
+        int **a = new int*[n+1];
+        loop(i,0,n+1){
+            a[i] = new int[m+1];
+        }
+        loop(i,0,n) loop(j,0,m) cin>>a[i][j];
+        
+        int res = n*m;
+        int len = min(n,m);
+        if(!(len&1)) len--;
+        for(int sz = 3; sz<= len; sz += 2){
+            for(int i = sz/2; i < n-sz/2; i++){
+                for(int j = sz/2; j < m-sz/2; j++){
+                    bool flag = true;
+                    loop(k,1,(sz/2)+1){
+                        if(a[i-k][j] != a[i+k][j]){
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if(!flag){
+                        continue;
+                    }
+                    flag = true;
+                    loop(k,1,(sz/2)+1){
+                        if(a[i][j-k] != a[i][j+k]){
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if(flag){
+                        res+=1;
+                    }
+                }
+            }
+        }
+        cout<<res<<endl;   	
 
     }
 }
