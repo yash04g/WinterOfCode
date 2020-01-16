@@ -12,6 +12,7 @@ using namespace std;
 #define vvi vector<vector<int> >
 #define vpii vector<pair<int,int> >
 #define all(v) v.begin(),v.end()
+#define mset(a,i) memset(a,i,sizeof(a))
 #define mii map<int,int>
 #define mci map<char,int>  
 #define pii pair<int,int>
@@ -19,10 +20,10 @@ using namespace std;
 #define deb(x) cout<<#x<<" "<<x<<endl;
 #define mp make_pair
 #define pb push_back
-#define sb __builtin_popcount
 #define mod 1000000007  
 #define endl "\n"
 #define inf 1e18
+#define sp(x,y) fixed<<setprecision(y)<<x
 
 void get_it_done(){
 	ios_base::sync_with_stdio(false);
