@@ -35,9 +35,6 @@ int gcd(int a, int b){
         return b; 
     return gcd(b % a, a); 
 } 
-void swap(int &a,int &b){
-	a^=b;b^=a;a^=b;
-}
 const int N = 2e5+5;
 int dp[N];
 
