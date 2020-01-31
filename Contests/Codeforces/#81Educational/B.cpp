@@ -37,6 +37,8 @@ int gcd(int a, int b){
 } 
 const int N = 1e5+5;
 int dp[N];
+
+
 int32_t main(){
 	get_it_done();
     int t=1;
@@ -46,36 +48,90 @@ int32_t main(){
         cin>>n>>x;
         string s;
         cin>>s;
-        int b[N];
-        int c0=0,c1=0;
-        int ans=0;
-        loop(i,0,n){
-            if(s[i]=='0'){
-                c0++;
-            }else{
-                c1++;
-            }
-            b[i]=c0-c1;
-            if(b[i]==x){
-                ans++;
-            }
+        // if(x<0){
+        //     int diff = 0;
+        //     loop(i,0,n){
+        //         if(s[i]=='1') diff++;
+        //         else diff--;
+        //     }
+        //     x *= (-1);
+        //     int rep = x/diff;
+        //     string z="";
+        //     rep += 1;
+        //     while(rep--) z += s;
+        //     diff=0;
+        //     int cnt = 0;
+        //     loop(i,0,z.size()){
+        //         if(s[i]=='1') diff++;
+        //         else diff--;
+        //         if(diff==x){
+        //             cnt++;
+        //         }
+        //     }
+        //     cout<<cnt<<endl;
+
+        // }else if(x>0){
+        //     int diff = 0;
+        //     loop(i,0,n){
+        //         if(s[i]=='0') diff++;
+        //         else diff--;
+        //     }
+        //     if(diff<0){
+        //         cout<<0<<endl;
+        //     }
+        //     int rep = x/diff;
+        //     string z="";
+        //     rep += 1;
+        //     while(rep--) z += s;
+        //     diff=0;
+        //     int cnt = 0;
+        //     loop(i,0,z.size()){
+        //         if(s[i]=='0') diff++;
+        //         else diff--;
+        //         if(diff==x){
+        //             cnt++;
+        //         }
+        //     }
+        //     cout<<cnt<<endl;
+        // }else{
+        //     if(n==1){
+        //         cout<<1<<endl;
+        //     }else{
+        //         int diff = 0;
+        //         loop(i,0,n){
+        //             if(s[i]=='1') diff++;
+        //             else diff--;
+        //         }
+        //         if(diff==0) cout<<-1<<endl;
+        //         else cout<<1<<endl;
+        //     }
+        // }
+        int diff[N]={};
+        if(s[0]=='0'){
+            diff[0] = 1;
+        }else{
+            diff[0] = -1;
         }
-        if(ans>0 && b[n-1]==0){
-            cout<<-1<<endl;
+        map<int,int> m;
+        loop(i,1,n){
+            diff[i] = diff[i-1];
+            if(s[i]=='1'){
+                diff[i] -= 1;
+            }else{
+                diff[i] += 1;
+            }
+            m[diff[i]]++;
+        }
+        if(diff[n-1]==0){
+            if(m[x]){
+                cout<<-1<<endl;
+            }else{
+                cout<<0<<endl;
+            }
             continue;
         }
-        if(x==0){
-            ans++;
-        }
-        loop(i,0,n){
-            if(b[n-1]!=0){
-                double a =(double(x-b[i])/double(b[n-1]));
-                if(a==trunc(a) && a>0){
-                    ans++;
-                }
-            }
-        }
-        cout<<ans<<endl;
+        
+
 
     }
 }
