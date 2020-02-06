@@ -41,7 +41,8 @@ int gcd(int a, int b){
     return gcd(b % a, a); 
 } 
 const int N = 3e5+5;
-
+string s;
+int n;
 
 int32_t main(){
 	get_it_done();
@@ -49,6 +50,25 @@ int32_t main(){
     cin >> T;
     loop(t,1,T+1){
     	cout<<"Case #"<<t<<": ";
+    	cin>>n;
+    	cin>>s;
+    	int maxi = -1;
+    	vi pref;
+    	pref.pb(0);
+    	pref.pb(s[0]-'0');
+    	loop(i,1,n){
+    		pref.pb(pref[i]+(s[i]-'0'));
+    	}
+    	// for(auto x:pref) deb(x);
+    	// loop(i,0,n+1) deb(i,pref[i]);
+    	int k = n/2 + (n%2);
+    	int j = 0;
+    	loop(i,k,n+1){
+    		maxi = max(maxi,pref[i]-pref[j]);
+    		j += 1;
+    	}
+    	
+    	cout<<maxi<<endl;
 
     }
 }
