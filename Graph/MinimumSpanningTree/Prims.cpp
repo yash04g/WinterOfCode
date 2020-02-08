@@ -54,24 +54,40 @@ void prims(){
     }
     weight[1] = 0;
     mset(visited,0);
-    loop(i,1,n+1){
-        int v = -1;
-        loop(i,1,n+1){
-            if(!visited[i] && (v==-1 || weight[i]<weight[v])){
-                v = i;
-            }
-        }
-        if(v==-1) break;
-        for(auto neighbour:adjList[v]){
-            if(!visited[neighbour.ff]){
-                if(weight[neighbour.ff]>neighbour.ss){
-                    weight[neighbour.ff] = min(weight[neighbour.ff],neighbour.ss);
-                    parent[neighbour.ff] = v;
+    priority_queue< pii, vector <pii> , greater<pii> > pq;
+    pq.push(mp(weight[1],1));
+    while(!pq.empty()){
+        int v = pq.top().ss;
+        pq.pop();
+        visited[v] = 1;
+        for(auto x:adjList[v]){
+            if(!visited[x.ff]){
+                if(weight[x.ff]>x.ss){
+                    weight[x.ff] = x.ss;
+                    parent[x.ff] = v;
+                    pq.push(mp(x.ss,x.ff));
                 }
             }
         }
-        visited[v] = 1;
     }
+    // loop(i,1,n+1){
+    //     int v = -1;
+    //     loop(i,1,n+1){
+    //         if(!visited[i] && (v==-1 || weight[i]<weight[v])){
+    //             v = i;
+    //         }
+    //     }
+    //     if(v==-1) break;
+    //     for(auto neighbour:adjList[v]){
+    //         if(!visited[neighbour.ff]){
+    //             if(weight[neighbour.ff]>neighbour.ss){
+    //                 weight[neighbour.ff] = min(weight[neighbour.ff],neighbour.ss);
+    //                 parent[neighbour.ff] = v;
+    //             }
+    //         }
+    //     }
+    //     visited[v] = 1;
+    // }
     loop(i,1,n+1){
         cout<<i<<" "<<parent[i]<<" "<<weight[i]<<endl;
     }
