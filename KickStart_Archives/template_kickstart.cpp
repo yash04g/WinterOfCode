@@ -30,6 +30,9 @@ void __f (const char* names, Arg1&& arg1, Args&&... args){
     const char* comma = strchr (names + 1, ',');
     cout.write (names, comma - names) << " : " << arg1 << " | "; __f (comma + 1, args...);
 }
+inline int add(int x, int y) { x += y; if (x >= mod) x -= mod; return x; }
+inline int sub(int x, int y) { x -= y; if (x < 0) x += mod; return x; }
+inline int mul(int x, int y) { return ((x % mod) * (y % mod)) % mod; }
 void get_it_done(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
