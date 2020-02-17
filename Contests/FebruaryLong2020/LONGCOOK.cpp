@@ -30,7 +30,6 @@ void __f (const char* names, Arg1&& arg1, Args&&... args){
     const char* comma = strchr (names + 1, ',');
     cout.write (names, comma - names) << " : " << arg1 << " | "; __f (comma + 1, args...);
 }
-
 void get_it_done(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
@@ -42,60 +41,42 @@ int gcd(int a, int b){
     return gcd(b % a, a); 
 } 
 const int N = 3e5+5;
-int slots[4][4];
-vi ans;
 
-void solve(int idx,set<int> s,vi a1){
-    if(idx==4){
-        int n1 = 4-s.size();
-        sort(all(a1),greater<int>());
-        int sum = 0;
-        loop(i,0,a1.size()){
-            sum += a1[i]*(25*(4-i));
-        }
-        sum -= n1*100;
-        ans.pb(sum);
-        return;
-    }
-    bool flag = 0;
-    loop(i,0,4){
-        if(s.find(i)!=s.end()) continue;
-        if(!slots[idx][i]) continue;
-        s.insert(i);
-        a1.pb(slots[idx][i]);
-        flag = 1;
-        solve(idx+1,s,a1);
-        s.erase(i);
-        a1.pop_back();
-    }
-    if(!flag) solve(idx+1,s,a1);
-}
+int day(int y){  
+    int d = 1;
+    int m = 2;
+    static int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };  
+    y -= m < 3;  
+    return ( y + y / 4 - y / 100 +  y / 400 + t[m - 1] + d) % 7;  
+}  
+
 
 int32_t main(){
     get_it_done();
     int t=1;
     cin >> t;
-    int p = 0;
     while (t--){
-        ans.clear();
-        int n;
-        cin>>n;
-        mset(slots,0);
-        while(n--){
-            int a;
-            char b;
-            cin>>b>>a;
-            slots[b-65][a/3-1]+=1;
+        int m1,y1,m2,y2;
+        cin>>m1>>y1>>m2>>y2;
+        int cnt = 0;
+        if(m1>2){
+            y1++;
         }
-        set<int> s;
-        vi a1;
-        solve(0,s,a1);
-        int cost = 0;
-        sort(all(ans),greater<int>());
-        cost += ans[0];
-        cout<<cost<<endl;
-        p += cost;
-        
+        if(m2<2){
+            y2--;
+        }
+        loop(i,y1,y2+1){
+            if(i%4 == 0 && (i!=100 || i!=200 || i!=300)){
+                if(day(i) == 6){
+                    cnt++;
+                }
+            }
+            else{
+                if(day(i) == 6 || day(i) == 0){
+                    cnt++;
+                }
+            }
+        }
+        cout<<cnt<<endl;
     }
-    cout<<p<<endl;
 }
