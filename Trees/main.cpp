@@ -78,12 +78,33 @@ int height(TreeNode<int>* root) {
     return 1+maxi;
 
 }
+
+void printNodesAtKLevel(TreeNode<int>* root,int k){
+	if(root==NULL) return;
+	if(k==0){
+		cout<<root->data<<" ";
+	}
+	for(int i=0;i<root->children.size();i++){
+		printNodesAtKLevel(root->children[i],k-1);
+	}
+}
+void preOrder(TreeNode<int>* root) {
+    if(root==NULL) return;
+	
+	cout<<root->data<<" ";
+
+	for(int i=0;i<root->children.size();i++){
+		preOrder(root->children[i]);
+	}
+}
+
 void postOrder(TreeNode<int>* root) {
-    if(root==NULL)
-		return;
+    if(root==NULL) return;
+	
 	for(int i=0;i<root->children.size();i++){
 		postOrder(root->children[i]);
 	}
+
 	cout<<root->data<<" ";
 }
 TreeNode<int>* maxDataNode(TreeNode<int>* root) {
@@ -97,6 +118,29 @@ TreeNode<int>* maxDataNode(TreeNode<int>* root) {
     }
     return maxi;
     
+}
+
+void deleteTree(TreeNode<int>* root){
+	for(int i=0;i<root->children.size();i++){
+		deleteTree(root->children[i]);
+	}
+	delete root;
+}
+
+void helper(TreeNode<int> *root,int depth){
+    if(root==NULL){
+        return;
+    }
+    root->data = depth;
+    for (int i = 0; i < root->children.size(); i++){
+        helper(root->children[i],depth+1);
+    }
+} 
+void replaceWithDepthValue(TreeNode<int> *root){
+    if(root==NULL){
+        return;
+    }
+    helper(root,0);
 }
 
 int main(){
