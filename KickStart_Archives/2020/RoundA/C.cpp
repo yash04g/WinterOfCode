@@ -41,7 +41,17 @@ int gcd(int a, int b){
     return gcd(b % a, a); 
 } 
 const int N = 3e5+5;
+int n,k;
 
+bool possible(int val,vi &a){
+    int req = 0;
+    loop(i,1,n){
+        int diff = a[i]-a[i-1];
+        req += ((diff-1)/val);
+        if(req>k) return 0;
+    }
+    return 1;
+}
 
 int32_t main(){
     get_it_done();
@@ -49,7 +59,7 @@ int32_t main(){
     cin >> T;
     loop(t,1,T+1){
         cout<<"Case #"<<t<<": ";
-        int n,k;
+        
         cin>>n>>k;
         vi a(n+1);
         loop(i,0,n) cin>>a[i];
@@ -57,33 +67,23 @@ int32_t main(){
             cout<<1<<endl;
             continue;
         }
-        map<int,int> m;
+        int s = 1;
+        int e = -inf;
         loop(i,1,n){
-            m[a[i]-a[i-1]]++;
+            s = min(s,a[i]-a[i-1]);
+            e = max(e,a[i]-a[i-1]);
         }
-        priority_queue<int> q;
-        for(auto x:m){
-            q.push(x.ff);
-        }
-        while(1){
-            int x = q.top();
-            if(m[x]>k) break;
-            else{
-                q.pop();
-                k -= m[x];
-                if(x&1){
-                    m[x/2] += m[x];
-                    m[x-x/2] += m[x];
-                    q.push(x/2);
-                    q.push(x-x/2);
-                }else{
-                    m[x/2] += 2*m[x];
-                    q.push(x/2);
-                }
+        int ans = e;
+        while(s<=e){
+            int mid = (s+e)/2;
+            if(possible(mid,a)){
+                e = mid-1;
+                ans = mid;
+            }else{
+                s = mid+1;
             }
         }
-        cout<<q.top()<<endl;
-
+        cout<<ans<<endl;
 
     }
 }
