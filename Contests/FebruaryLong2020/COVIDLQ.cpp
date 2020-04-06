@@ -41,58 +41,31 @@ int gcd(int a,int b){
     return gcd(b,a%b);
 }
 const int N = 3e5+5;
-int a[505][5005];
-int n,m,k;
-vi ans;
-
-void solve(){
-    loop(i,0,n){
-        map<int,int> mp;
-        int mini=INT_MAX;
-        vi freq(k,0);
-        loop(j,0,k){
-            if(mini>freq[j]){
-                mini=freq[j];
-            }
-        }
-        loop(j,0,k){
-            if(freq[j]==mini){
-                mp[a[i][j]]++;    
-            }
-        }
-        int mx=-1;
-        int maxi;
-        for(auto x:mp){
-            if(x.second > mx){
-                mx=x.second;
-                maxi=x.first ;
-            }
-        }
-        ans[i]=maxi;
-        for(int j=0;j<k;j++){
-            if(a[i][j]==maxi){
-                freq[j]++;
-            }
-        }
-    }
-}
 
 int32_t main(){
     get_it_done();
     int q=1;
     cin >> q;
-    while(q--){
-        cin>>n>>m>>k;
-        ans.clear();
-        ans.resize(n,0);
+    while (q--){
+        int n;
+        cin>>n;
+        vi a(n);
+        loop(i,0,n) cin>>a[i];
+        vi b;
         loop(i,0,n){
-            loop(j,0,k){
-                cin>>a[i][j];
-            }
+            if(a[i]==1) b.pb(i+1);
         }
-        solve();
-        loop(i,0,n) cout<<ans[i]<<" ";
-        cout<<endl;
-        
+        if(b.size()==1){
+            cout<<"YES"<<endl;
+            continue;
+        }
+        bool flag = 1;
+        loop(i,1,b.size()){
+            if(b[i]-b[i-1]<=5) flag = 0;
+        }
+        if(flag) cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
+
+
     }
 }

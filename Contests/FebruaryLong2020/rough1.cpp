@@ -1,59 +1,47 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
+#define ll long long
+void get_it_done(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+}
+const int N = 1e5+5;
+ll n;
+ll dp[N][4];
+ll arr[N];
+ll ans = 0;
 
-int dayofweek(int y){  
-	int d = 1;
-	int m = 2;
-    static int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };  
-    y -= m < 3;  
-    return ( y + y / 4 - y / 100 +  y / 400 + t[m - 1] + d) % 7;  
-}  
-
-int main(){
-	int t;
-	cin>>t;
-	while(t--){
-		int m1,y1,m2,y2;
-		cin>>m1>>y1>>m2>>y2;
-		int tot=0;
-		int x;
-		int y;
-        for(int i=y1;i<=y2;i++){
-			x = 10;
-			y = i;
-            int leap=0;
-            int xtra=y;
-            y/=100;
-            if(y%4==0){
-                x+=6;
-            }
-            else if(y%4==1){
-                x+=4;
-            }
-            else if(y%4==2){
-                x+=2;
-            }
-            if(xtra%4==0){
-                if(xtra%100!=0){
-                    x--;
-                    leap=1;
-                }
-                else if(xtra%400==0){
-                    x--;
-                    leap=1;
-                }
-            }
-            xtra=xtra%100;
-            xtra= (xtra +(xtra/4));
-            x+=xtra;
-            x=x%7;
-            if(x==5){
-                tot++;
-            }
-            else if(x==6 && leap==0){
-                tot++;
-            }
+void solve(){
+    dp[0][arr[0]] = 1ll;
+    if(arr[0]!=2ll) ans += 1ll;
+	for(ll i=1ll;i<n;++i){
+        for(ll j=0;j<4ll;++j){
+			dp[i][(j*arr[i])%4ll] += dp[i-1][j];
         }
-        cout<<tot<<endl;
-	}
+        dp[i][arr[i]] += 1ll;
+		for(ll j=0ll;j<4ll;++j){
+			if(j==2ll) continue;
+            ans += dp[i][j];
+        }
+    }
+}
+
+int32_t main(){
+    get_it_done();
+    ll q=1;
+    cin >> q;
+    while (q--){
+    	ans = 0;
+    	for(ll i=0ll;i<n;++i) for(ll j=0ll;j<4ll;j++) dp[i][j] = 0ll;
+        cin>>n;
+        for(ll i=0ll;i<n;++i){
+            cin>>arr[i];
+            arr[i] = (arr[i]%4ll+4ll);
+            arr[i] %= 4ll;
+        }
+		solve();
+        cout<<ans<<endl;
+        
+    }
 }

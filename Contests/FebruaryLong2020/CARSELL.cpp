@@ -41,58 +41,27 @@ int gcd(int a,int b){
     return gcd(b,a%b);
 }
 const int N = 3e5+5;
-int a[505][5005];
-int n,m,k;
-vi ans;
-
-void solve(){
-    loop(i,0,n){
-        map<int,int> mp;
-        int mini=INT_MAX;
-        vi freq(k,0);
-        loop(j,0,k){
-            if(mini>freq[j]){
-                mini=freq[j];
-            }
-        }
-        loop(j,0,k){
-            if(freq[j]==mini){
-                mp[a[i][j]]++;    
-            }
-        }
-        int mx=-1;
-        int maxi;
-        for(auto x:mp){
-            if(x.second > mx){
-                mx=x.second;
-                maxi=x.first ;
-            }
-        }
-        ans[i]=maxi;
-        for(int j=0;j<k;j++){
-            if(a[i][j]==maxi){
-                freq[j]++;
-            }
-        }
-    }
-}
 
 int32_t main(){
     get_it_done();
     int q=1;
     cin >> q;
-    while(q--){
-        cin>>n>>m>>k;
-        ans.clear();
-        ans.resize(n,0);
-        loop(i,0,n){
-            loop(j,0,k){
-                cin>>a[i][j];
-            }
+    while (q--){
+        int n;
+        cin>>n;
+        vi a(n);
+        loop(i,0,n) cin>>a[i];
+        priority_queue<int> q;
+        loop(i,0,n) q.push(a[i]);
+        int ans = 0;
+        int cnt = 0;
+        while(!q.empty()){
+            int num = max(0ll,q.top()-cnt);
+            ans = (ans+num)%mod;
+            cnt += 1;
+            q.pop();
         }
-        solve();
-        loop(i,0,n) cout<<ans[i]<<" ";
-        cout<<endl;
-        
+        cout<<ans<<endl;
+
     }
 }

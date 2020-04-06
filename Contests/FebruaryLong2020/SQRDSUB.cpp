@@ -40,59 +40,37 @@ int gcd(int a,int b){
     if(a<b) return gcd(b,a);
     return gcd(b,a%b);
 }
-const int N = 3e5+5;
-int a[505][5005];
-int n,m,k;
-vi ans;
-
-void solve(){
-    loop(i,0,n){
-        map<int,int> mp;
-        int mini=INT_MAX;
-        vi freq(k,0);
-        loop(j,0,k){
-            if(mini>freq[j]){
-                mini=freq[j];
-            }
-        }
-        loop(j,0,k){
-            if(freq[j]==mini){
-                mp[a[i][j]]++;    
-            }
-        }
-        int mx=-1;
-        int maxi;
-        for(auto x:mp){
-            if(x.second > mx){
-                mx=x.second;
-                maxi=x.first ;
-            }
-        }
-        ans[i]=maxi;
-        for(int j=0;j<k;j++){
-            if(a[i][j]==maxi){
-                freq[j]++;
-            }
-        }
-    }
-}
+const int N = 1e5+5;
 
 int32_t main(){
     get_it_done();
     int q=1;
     cin >> q;
-    while(q--){
-        cin>>n>>m>>k;
-        ans.clear();
-        ans.resize(n,0);
+    while (q--){
+        int n;
+        cin>>n;
+        int dp[n+1][4];
+        int a[n+1];
+        mset(dp,0);
         loop(i,0,n){
-            loop(j,0,k){
-                cin>>a[i][j];
+            cin>>a[i];
+            a[i] = (a[i]%4+4)%4;
+        }
+        int ans = 0;
+        dp[0][a[0]] = 1;
+        if(a[0]!=2) ans += 1;
+        loop(i,1,n){
+            loop(j,0,4){
+                dp[i][(j*a[i])%4] += dp[i-1][j];
+            }
+            dp[i][a[i]] += 1;
+            loop(j,0,4){
+                if(j!=2){
+                    ans += dp[i][j];
+                }
             }
         }
-        solve();
-        loop(i,0,n) cout<<ans[i]<<" ";
-        cout<<endl;
+        cout<<ans<<endl;
         
     }
 }

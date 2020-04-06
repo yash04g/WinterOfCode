@@ -41,56 +41,32 @@ int gcd(int a,int b){
     return gcd(b,a%b);
 }
 const int N = 3e5+5;
-int a[505][5005];
-int n,m,k;
-vi ans;
-
-void solve(){
-    loop(i,0,n){
-        map<int,int> mp;
-        int mini=INT_MAX;
-        vi freq(k,0);
-        loop(j,0,k){
-            if(mini>freq[j]){
-                mini=freq[j];
-            }
-        }
-        loop(j,0,k){
-            if(freq[j]==mini){
-                mp[a[i][j]]++;    
-            }
-        }
-        int mx=-1;
-        int maxi;
-        for(auto x:mp){
-            if(x.second > mx){
-                mx=x.second;
-                maxi=x.first ;
-            }
-        }
-        ans[i]=maxi;
-        for(int j=0;j<k;j++){
-            if(a[i][j]==maxi){
-                freq[j]++;
-            }
-        }
-    }
-}
 
 int32_t main(){
     get_it_done();
     int q=1;
     cin >> q;
-    while(q--){
+    while (q--){
+        int n,m,k;
         cin>>n>>m>>k;
-        ans.clear();
-        ans.resize(n,0);
+        vi ans(n,1);
         loop(i,0,n){
+            map<int,int> m1;
             loop(j,0,k){
-                cin>>a[i][j];
+                int x;
+                cin>>x;
+                m1[x]++;
             }
+            int mini = 0;
+            int idx = 1;
+            loop(j,1,m+1){
+                if(m1[j]>mini){
+                    idx = j;
+                    mini = m1[j];
+                }
+            }
+            ans[i] = idx;
         }
-        solve();
         loop(i,0,n) cout<<ans[i]<<" ";
         cout<<endl;
         

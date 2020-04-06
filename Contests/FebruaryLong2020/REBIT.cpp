@@ -41,58 +41,40 @@ int gcd(int a,int b){
     return gcd(b,a%b);
 }
 const int N = 3e5+5;
-int a[505][5005];
-int n,m,k;
-vi ans;
+int m = 998244353;
+class Triplet{
+public:
+    int x;
+    int y;
+    int g;
+};
 
-void solve(){
-    loop(i,0,n){
-        map<int,int> mp;
-        int mini=INT_MAX;
-        vi freq(k,0);
-        loop(j,0,k){
-            if(mini>freq[j]){
-                mini=freq[j];
-            }
-        }
-        loop(j,0,k){
-            if(freq[j]==mini){
-                mp[a[i][j]]++;    
-            }
-        }
-        int mx=-1;
-        int maxi;
-        for(auto x:mp){
-            if(x.second > mx){
-                mx=x.second;
-                maxi=x.first ;
-            }
-        }
-        ans[i]=maxi;
-        for(int j=0;j<k;j++){
-            if(a[i][j]==maxi){
-                freq[j]++;
-            }
-        }
+Triplet extendedEuclid(int a,int b){
+    if(b==0){
+        Triplet ans;
+        ans.g = a;
+        ans.x = 1;
+        ans.y = 0;
+        return ans;
     }
+    Triplet temp = extendedEuclid(b,a%b);
+    Triplet ans;
+    ans.g = temp.g;
+    ans.x = temp.y;
+    ans.y = temp.x - (a/b)*temp.y;
+    return ans;
+}
+int mmI(int a){
+    Triplet ans = extendedEuclid(a,m);
+    return (ans.x+m)%m; // As x can be negative as well
 }
 
 int32_t main(){
     get_it_done();
     int q=1;
     cin >> q;
-    while(q--){
-        cin>>n>>m>>k;
-        ans.clear();
-        ans.resize(n,0);
-        loop(i,0,n){
-            loop(j,0,k){
-                cin>>a[i][j];
-            }
-        }
-        solve();
-        loop(i,0,n) cout<<ans[i]<<" ";
-        cout<<endl;
+    while (q--){
+                
         
     }
 }
