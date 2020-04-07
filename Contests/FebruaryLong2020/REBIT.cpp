@@ -65,16 +65,112 @@ Triplet extendedEuclid(int a,int b){
     return ans;
 }
 int mmI(int a){
+    deb(m);
     Triplet ans = extendedEuclid(a,m);
-    return (ans.x+m)%m; // As x can be negative as well
+    return (ans.x+m)%m; 
 }
+int dp[4];
+
+// int solve(string s){
+//     int n = s.size();
+//     // stack to store integer values. 
+//     stack <int> values; 
+      
+//     // stack to store operators. 
+//     stack <char> ops; 
+      
+//     loop(i,0,n){   
+//         // Current token is an opening  
+//         // brace, push it to 'ops' 
+//         if(tokens[i] == '('){ 
+//             ops.push(tokens[i]); 
+//         } 
+          
+//         // Current token is a number, push  
+//         // it to stack for numbers. 
+//         else if(s[i]=='#'){ 
+//             int val = 0; 
+//             values.push(s[i]);
+//         } 
+//         else if(tokens[i] == ')') { 
+//             while(!ops.empty() && ops.top() != '('){ 
+//                 int val2 = values.top(); 
+//                 values.pop(); 
+                  
+//                 int val1 = values.top(); 
+//                 values.pop(); 
+                  
+//                 char op = ops.top(); 
+//                 ops.pop(); 
+                  
+//                 values.push(applyOp(val1, val2, op)); 
+//             } 
+              
+//             // pop opening brace. 
+//             if(!ops.empty()) 
+//                ops.pop(); 
+//         } 
+          
+//         // Current token is an operator. 
+//         else
+//         { 
+//             // While top of 'ops' has same or greater  
+//             // precedence to current token, which 
+//             // is an operator. Apply operator on top  
+//             // of 'ops' to top two elements in values stack. 
+//             while(!ops.empty() && precedence(ops.top()) 
+//                                 >= precedence(tokens[i])){ 
+//                 int val2 = values.top(); 
+//                 values.pop(); 
+                  
+//                 int val1 = values.top(); 
+//                 values.pop(); 
+                  
+//                 char op = ops.top(); 
+//                 ops.pop(); 
+                  
+//                 values.push(applyOp(val1, val2, op)); 
+//             } 
+              
+//             // Push current token to 'ops'. 
+//             ops.push(tokens[i]); 
+//         } 
+//     } 
+      
+//     // Entire expression has been parsed at this 
+//     // point, apply remaining ops to remaining 
+//     // values. 
+//     while(!ops.empty()){ 
+//         int val2 = values.top(); 
+//         values.pop(); 
+                  
+//         int val1 = values.top(); 
+//         values.pop(); 
+                  
+//         char op = ops.top(); 
+//         ops.pop(); 
+                  
+//         values.push(applyOp(val1, val2, op)); 
+//     } 
+      
+//     // Top of 'values' contains result, return it. 
+//     return values.top(); 
+// }
 
 int32_t main(){
     get_it_done();
     int q=1;
     cin >> q;
     while (q--){
-                
+        string s;
+        cin>>s;
+        int n = s.size();
+        if(n==1){
+            int ans = 1*mmI(16);
+            cout<<ans<<" "<<ans<<" "<<ans<<" "<<ans<<endl;
+            continue;
+        }
+        // cout<<solve(s);       
         
     }
 }

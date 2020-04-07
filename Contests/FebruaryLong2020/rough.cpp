@@ -46,10 +46,10 @@ int n,m,k;
 vi ans;
 
 void solve(){
+    vi freq(k,0);
     loop(i,0,n){
-        map<int,int> mp;
-        int mini=INT_MAX;
-        vi freq(k,0);
+        map<int,int> m1;
+        int mini=inf;
         loop(j,0,k){
             if(mini>freq[j]){
                 mini=freq[j];
@@ -57,20 +57,20 @@ void solve(){
         }
         loop(j,0,k){
             if(freq[j]==mini){
-                mp[a[i][j]]++;    
+                m1[a[i][j]]++;    
             }
         }
-        int mx=-1;
-        int maxi;
-        for(auto x:mp){
-            if(x.second > mx){
-                mx=x.second;
-                maxi=x.first ;
+        int maxi = 0;
+        int val1 = 1;
+        for(auto x:m1){
+            if(x.ss>maxi){
+                maxi=x.ss;
+                val1=x.ff;
             }
         }
-        ans[i]=maxi;
-        for(int j=0;j<k;j++){
-            if(a[i][j]==maxi){
+        ans[i]=val1;
+        loop(j,0,k){  
+            if(a[i][j]==val1){
                 freq[j]++;
             }
         }

@@ -1,47 +1,50 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-#define ll long long
-void get_it_done(){
+int n;
+
+void print(vector<vector<int> > &arr){
+    n = arr.size();
+    for(int i=0;i<n;i++){
+        cout<<arr[i].size()<<" ";
+        for(int j=0;j<arr[i].size();j++){
+            if(j==((int)(arr[i].size()-1))){
+                cout<<arr[i][j]<<endl;
+            }else{
+                cout<<arr[i][j]<<" ";
+            }
+        }
+    }
+}
+
+int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-}
-const int N = 1e5+5;
-ll n;
-ll dp[N][4];
-ll arr[N];
-ll ans = 0;
-
-void solve(){
-    dp[0][arr[0]] = 1ll;
-    if(arr[0]!=2ll) ans += 1ll;
-	for(ll i=1ll;i<n;++i){
-        for(ll j=0;j<4ll;++j){
-			dp[i][(j*arr[i])%4ll] += dp[i-1][j];
-        }
-        dp[i][arr[i]] += 1ll;
-		for(ll j=0ll;j<4ll;++j){
-			if(j==2ll) continue;
-            ans += dp[i][j];
-        }
-    }
-}
-
-int32_t main(){
-    get_it_done();
-    ll q=1;
-    cin >> q;
-    while (q--){
-    	ans = 0;
-    	for(ll i=0ll;i<n;++i) for(ll j=0ll;j<4ll;j++) dp[i][j] = 0ll;
+    int T;
+    cin>>T;
+    for(int t=0;t<T;t++){
         cin>>n;
-        for(ll i=0ll;i<n;++i){
-            cin>>arr[i];
-            arr[i] = (arr[i]%4ll+4ll);
-            arr[i] %= 4ll;
+        if(n==1){
+            cout<<1<<endl<<1<<" "<<1<<endl;
+            continue;
         }
-		solve();
-        cout<<ans<<endl;
-        
+        vector<vector<int> > ans;
+        vector<int> days;
+        days.push_back(1);
+        days.push_back(2);
+        if(n%2==1){
+            days.push_back(n);
+            n -= 1;
+        }
+        ans.push_back(days);
+        for(int i=3;i<=n;i+=2){
+            vector<int> days;
+            days.push_back(i);
+            days.push_back(i+1);
+            ans.push_back(days);
+        }
+        cout<<ans.size()<<endl;
+        print(ans);
     }
+    return 0;
 }
