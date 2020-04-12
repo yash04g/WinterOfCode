@@ -40,24 +40,19 @@ int gcd(int a,int b){
     if(a<b) return gcd(b,a);
     return gcd(b,a%b);
 }
-const int N = 1e3+5;
+const int N = 1e6+5;
 bool isPrime[N];
 vi primes;
-bool isPower(int a) { 
-    if (a == 1) 
-        return true; 
-  
-    for (int i = 2; i * i <= a; i++) { 
-        double val = log(a) / log(i); 
-        if ((val - (int)val) < 0.00000001) 
-            return true; 
-    } 
-  
-    return false; 
-}
 void precompute(){
-    loop(i,4,N){
-        if(isPower(i)) primes.pb(i);
+    isPrime[0] = 0;
+    isPrime[1] = 0;
+    loop(i,2,N){
+        if(isPrime[i]){
+            primes.pb(i);
+            for(int j=i*2;j*j<N;j+=i){
+                isPrime[j] = 0;
+            }
+        }
     }
 }
 
@@ -65,15 +60,51 @@ int32_t main(){
     get_it_done();
     int q=1;
     cin >> q;
+    loop(i,0,N) isPrime[i] = 1;; 
     precompute();
     while (q--){
         int n;
         cin>>n;
         int ans = 0;
         ans = (ans+n)%mod;
+        set<int> s;
+        map<int,vi> m1;
         loop(i,0,primes.size()){
-            int val = n/primes[i];
-            val = (val*primes[i])%mod;
+            if(primes[i]*primes[i]>n) break;
+            else{
+                int num = primes[i]*primes[i];
+                while(num<=n){
+                    m1[primes[i]].pb(num);
+                    s.insert(num);
+                    num *= primes[i];
+                }
+            }
+        }
+        // for(auto x:m1){
+        //     cout<<x.ff<<" ";
+        //     loop(i,0,x.ss.size()){
+        //         cout<<x.ss[i]<<" ";
+        //     }
+        //     cout<<endl;
+        // }
+        vi temp = m1[2];
+        for(auto x:m1){
+            if(x.ff==2) continue;
+            else{
+                loop(i,0,temp.size()){
+                    loop(j,0,x.ss.size()){
+                        if(temp[i]*x.ss[j]>n) break;
+                        else s.insert((temp[i]*x.ss[j]));
+                    }
+                }
+            }
+        }
+        // loop(i,0,sq.size()) cout<<sq[i]<<" ";
+        // cout<<endl;
+        for(auto x:s){
+            deb(x);
+            int val = n/x;
+            val = val*x;
             ans = (ans+val)%mod;
         }
         cout<<ans<<endl;

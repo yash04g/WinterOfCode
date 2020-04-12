@@ -1,3 +1,6 @@
+// Reference => https://www.geeksforgeeks.org/expression-tree/
+// YASH GUPTA
+// DELHI TECHNOLOGICAL UNIVERSITY
 #include <bits/stdc++.h>
 #include<unordered_map>
 #include<unordered_set>
@@ -40,8 +43,8 @@ int gcd(int a,int b){
     if(a<b) return gcd(b,a);
     return gcd(b,a%b);
 }
-const int N = 3e5+5;
-int m = 998244353;
+const int m = 998244353;
+string s;
 class Triplet{
 public:
     int x;
@@ -66,7 +69,169 @@ Triplet extendedEuclid(int a,int b){
 }
 int mmI(int a){
     Triplet ans = extendedEuclid(a,m);
-    return (ans.x+m)%m; // As x can be negative as well
+    return (ans.x+m)%m; 
+}
+
+class Node{
+public:
+    Node *left;
+    Node *right;
+    char c;
+    Node(){
+        left = NULL;
+        right = NULL;
+    }
+};
+
+stack<Node*> build(){
+    stack<Node*> s1;
+    loop(i,0,s.size()){
+        if(s[i] != ')'){
+            Node *newNode = new Node;
+            newNode->c = s[i];
+            s1.push(newNode);
+        }
+        else{
+            Node *t1 = s1.top();
+            // deb(t1->c); 
+            s1.pop();
+            Node *t = s1.top();
+            // deb(t->c);
+            s1.pop();
+            Node *t2 = s1.top(); 
+            // deb(t2->c);
+            s1.pop();
+            // deb((s1.top())->c);
+            s1.pop();
+            t->left = t2;
+            t->right = t1;
+            s1.push(t);
+        }
+    }
+    return s1;
+}
+
+vi solve(Node *root){
+    vi dp;
+    if(!(root->left) && !(root->right)){
+        int val = mmI(4);
+        dp.pb(val);
+        dp.pb(val);
+        dp.pb(val);
+        dp.pb(val);
+        return dp;
+    }
+    vi leftChild = solve(root->left);
+    vi rightChild = solve(root->right);
+    int val0 = 0;
+    int val1 = 0;
+    int vala = 0;
+    int valA = 0;
+    if(root->c=='^'){
+        val0 += (leftChild[0]*rightChild[0])%m;
+        val0 %= m;
+        val0 += (leftChild[1]*rightChild[1])%m;
+        val0 %= m;
+        val0 += (leftChild[2]*rightChild[2])%m;
+        val0 %= m;
+        val0 += (leftChild[3]*rightChild[3])%m;
+        val0 %= m;
+        val1 += (leftChild[0]*rightChild[1])%m;
+        val1 %= m;
+        val1 += (leftChild[1]*rightChild[0])%m;
+        val1 %= m;
+        val1 += (leftChild[2]*rightChild[3])%m;
+        val1 %= m;
+        val1 += (leftChild[3]*rightChild[2])%m;
+        val1 %= m;
+        vala += (leftChild[0]*rightChild[2])%m;
+        vala %= m;
+        vala += (leftChild[2]*rightChild[0])%m;
+        vala %= m;
+        vala += (leftChild[3]*rightChild[1])%m;
+        vala %= m;
+        vala += (leftChild[1]*rightChild[3])%m;
+        vala %= m;
+        valA += (leftChild[0]*rightChild[3])%m;
+        valA %= m;
+        valA += (leftChild[3]*rightChild[0])%m;
+        valA %= m;
+        valA += (leftChild[2]*rightChild[1])%m;
+        valA %= m;
+        valA += (leftChild[1]*rightChild[2])%m;
+        valA %= m;
+    }else if(root->c=='|'){
+        val0 += (leftChild[0]*rightChild[0])%m;
+        val0 %= m;
+        val1 += (leftChild[1]*rightChild[1])%m;
+        val1 %= m;
+        val1 += (leftChild[1]*rightChild[2])%m;
+        val1 %= m;
+        val1 += (leftChild[2]*rightChild[1])%m;
+        val1 %= m;
+        val1 += (leftChild[1]*rightChild[3])%m;
+        val1 %= m;
+        val1 += (leftChild[3]*rightChild[1])%m;
+        val1 %= m;
+        val1 += (leftChild[0]*rightChild[1])%m;
+        val1 %= m;
+        val1 += (leftChild[1]*rightChild[0])%m;
+        val1 %= m;
+        val1 += (leftChild[2]*rightChild[3])%m;
+        val1 %= m;
+        val1 += (leftChild[3]*rightChild[2])%m;
+        val1 %= m;
+        vala += (leftChild[0]*rightChild[2])%m;
+        vala %= m;
+        vala += (leftChild[2]*rightChild[0])%m;
+        vala %= m;
+        vala += (leftChild[2]*rightChild[2])%m;
+        vala %= m;
+        valA += (leftChild[0]*rightChild[3])%m;
+        valA %= m;
+        valA += (leftChild[3]*rightChild[0])%m;
+        valA %= m;
+        valA += (leftChild[3]*rightChild[3])%m; 
+        valA %= m;
+    }else{
+        val0 += (leftChild[0]*rightChild[0])%m; 
+        val0 %= m;
+        val0 += (leftChild[0]*rightChild[1])%m;
+        val0 %= m;
+        val0 += (leftChild[1]*rightChild[0])%m;
+        val0 %= m;
+        val0 += (leftChild[0]*rightChild[2])%m;
+        val0 %= m;
+        val0 += (leftChild[2]*rightChild[0])%m;
+        val0 %= m;
+        val0 += (leftChild[3]*rightChild[0])%m;
+        val0 %= m;
+        val0 += (leftChild[0]*rightChild[3])%m;
+        val0 %= m;
+        val0 += (leftChild[2]*rightChild[3])%m;
+        val0 %= m;
+        val0 += (leftChild[3]*rightChild[2])%m;
+        val0 %= m;
+        val1 += (leftChild[1]*rightChild[1])%m;
+        val1 %= m;
+        vala += (leftChild[1]*rightChild[2])%m;
+        vala %= m;
+        vala += (leftChild[2]*rightChild[1])%m;
+        vala %= m;
+        vala += (leftChild[2]*rightChild[2])%m;
+        vala %= m;
+        valA += (leftChild[1]*rightChild[3])%m;
+        valA %= m;
+        valA += (leftChild[3]*rightChild[1])%m;
+        valA %= m;
+        valA += (leftChild[3]*rightChild[3])%m;
+        valA %= m;
+    }
+    dp.pb(val0);
+    dp.pb(val1);
+    dp.pb(vala);
+    dp.pb(valA);
+    return dp;
 }
 
 int32_t main(){
@@ -74,7 +239,17 @@ int32_t main(){
     int q=1;
     cin >> q;
     while (q--){
-        
-        
+        cin>>s;
+        stack<Node*> tree = build();
+        Node* root = tree.top();
+        tree.pop();
+        vi dp = solve(root);
+        loop(i,0,4){
+            if(i==3){
+                cout<<dp[3]<<endl;
+                break;
+            }
+            cout<<dp[i]<<" ";
+        }
     }
 }

@@ -1,48 +1,50 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-
 int n;
-vector<vector<int> > ans;
+
+void print(vector<vector<int> > &arr){
+    n = arr.size();
+    for(int i=0;i<n;i++){
+        cout<<arr[i].size()<<" ";
+        for(int j=0;j<arr[i].size();j++){
+            if(j==((int)(arr[i].size()-1))){
+                cout<<arr[i][j]<<endl;
+            }else{
+                cout<<arr[i][j]<<" ";
+            }
+        }
+    }
+}
 
 int main(){
-	ios_base::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    int t = 1;
-    cin>>t;
-    while(t--){
-    	ans.clear();
-    	cin>>n;
+    int T;
+    cin>>T;
+    for(int t=0;t<T;t++){
+        cin>>n;
         if(n==1){
             cout<<1<<endl<<1<<" "<<1<<endl;
             continue;
         }
-        vector<int> day;
-        day.push_back(1);
-        day.push_back(2);
-        if(n&1){
-            day.push_back(n);
+        vector<vector<int> > ans;
+        vector<int> days;
+        days.push_back(1);
+        days.push_back(2);
+        if(n%2==1){
+            days.push_back(n);
             n -= 1;
         }
-        ans.push_back(day);
-        int i = 3;
-        while(i<=n){
-        	vector<int> temp;
-            temp.push_back(i);
-            temp.push_back(i+1);
-            ans.push_back(temp);
-            i += 2;
+        ans.push_back(days);
+        for(int i=3;i<=n;i+=2){
+            vector<int> days;
+            days.push_back(i);
+            days.push_back(i+1);
+            ans.push_back(days);
         }
         cout<<ans.size()<<endl;
-        for(int i=0;i<ans.size();i++){
-            cout<<ans[i].size()<<" ";
-            for(int j=0;j<ans[i].size();j++){
-                if(j==((int)(ans[i].size()-1))){
-                    cout<<ans[i][j]<<endl;
-                }else{
-                    cout<<ans[i][j]<<" ";
-                }
-            }
-        }
+        print(ans);
     }
+    return 0;
 }
