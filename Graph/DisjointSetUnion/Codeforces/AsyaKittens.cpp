@@ -1,3 +1,4 @@
+// https://codeforces.com/problemset/problem/1131/F
 #include <bits/stdc++.h>
 #include<unordered_map>
 #include<unordered_set>
@@ -35,52 +36,54 @@ void swap(int &a,int &b){
     a^=b;b^=a;a^=b;
 }
 const int N = 2e5+5;
-int parent[N],sz[N],mx[N],mn[N];
+int n;
+int parent[N];
+pii arr[N];
+vi vec[N];
 
-void initialize(int n){
-    loop(i,1,n+1) sz[i] = 1,parent[i] = i,mx[i] = i,mn[i]=i;
+void build(){
+    loop(i,0,n+1){
+        parent[i] = i;
+        arr[i].first = i;
+        arr[i].second = i;
+    }
 }
-int find_parent(int a){
-    if(parent[a]==a)
+ 
+int find(int a){
+    if(parent[a] == a) 
         return a;
-    return find_parent(parent[parent[a]]);
+    return parent[a] = find(parent[a]);
 }
-bool isConnected(int a,int b){
-    if(find_parent(a)==find_parent(b)) return true;
-    return false;
-}
-int make_union(int a,int b){
-    int r_a = find_parent(a);
-    int r_b = find_parent(b);
-    if(r_a==r_b){
-        return 0;
+ 
+void make_union(int a, int b){
+    int r_a = find(a);
+    int r_b = find(b);
+ 
+    if(r_a != r_b){
+        parent[r_b] = r_a; 
+        vec[ arr[r_a].second ].pb(arr[r_b].first); 
+        arr[r_a].second = arr[r_b].second;   
     }
-    if(sz[r_a]<sz[r_b]){
-        parent[r_a] = r_b;
-        sz[r_b] += sz[r_a];
-        mx[r_b] = max(mx[r_a],mx[r_b]);
-        mn[r_b] = min(mn[r_a],mn[r_b]);
-    }else{
-        parent[r_b] = r_a;
-        sz[r_a] += sz[r_b];
-        mx[r_a] = max(mx[r_a],mx[r_b]);
-        mn[r_a] = max(mn[r_a],mn[r_b]);
-    }
-    return 1;
 }
+
 int32_t main(){
     get_it_done();
     int t=1;
     // cin >> t;
     while (t--){
-        int n,m;
-        cin>>n>>m;
-        initialize(n);
-        // cout<<1<<endl;
-        loop(i,0,m){
+        cin>>n;
+        build();
+        loop(i,0,n-1){
             int u,v;
             cin>>u>>v;
             make_union(u,v);
+        }        
+        int i = find(1);
+        while(1){
+            cout<<i<<" ";
+            if(vec[i].size()>0) i = vec[i][0];
+            else break;
         }
+
     }
 }

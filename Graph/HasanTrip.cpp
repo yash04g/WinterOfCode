@@ -1,4 +1,3 @@
-// https://codeforces.com/contest/1144/problem/F
 #include <bits/stdc++.h>
 #include<unordered_map>
 #include<unordered_set>
@@ -20,7 +19,8 @@ using namespace std;
 #define pb push_back
 #define mod 1000000007  
 #define endl "\n"
-#define inf 1e18
+#define inf 1e9
+#define pdd pair<double,double>
 
 void get_it_done(){
 	ios_base::sync_with_stdio(false);
@@ -28,27 +28,12 @@ void get_it_done(){
 	cout.tie(0);
 }
 const int N = 1e5+5;
-int dp[N];
-vi adjList[200005];
-vi color(200005,-1);
-vector<bool> visited(200005,0);
+// int dp[N];
+pdd trip[3005];
+double fun[3005];
 
-bool isBipartite(int src,int clr){
-	visited[src] = true;
-	color[src] = clr;
-	for(int neighbour : adjList[src]){
-		if(visited[neighbour]){
-			if(color[neighbour]==clr){
-				return false;
-			}
-		}else{
-			bool check = isBipartite(neighbour,clr^1);
-			if(check==false)
-				return false;
-		}
-	}
-	return true;
-
+double dis(pdd d1,pdd d2){
+	return sqrt(pow(d1.first-d2.first,2)+pow(d2.second-d1.second,2));
 }
 
 int32_t main(){
@@ -56,24 +41,28 @@ int32_t main(){
     int t=1;
     // cin >> t;
     while (t--){
-		int n,m;
-		cin>>n>>m;
-		vpii a;
-		fo(i,m){
-			int u,v;
-			cin>>u>>v;
-			adjList[u].pb(v);
-			adjList[v].pb(u);
-			a.pb(mp(u,v));
+		int n;
+		cin>>n;
+		fo(i,n){
+			double x,y;
+			cin>>x>>y>>fun[i];
+			trip[i] = mp(x,y);
 		}
-		if(!isBipartite(1,1)){
-			cout<<"No"<<endl;
-			continue;
-		}else{
-			cout<<"Yes"<<endl;
-			for(int i=0;i<m;i++){
-				cout<<color[a[i].first];
+		double dp[3005];
+		memset(dp,0,sizeof(dp));
+		dp[0] = fun[0];
+		for(int i=1;i<n;i++){
+			dp[i] = -inf;
+			for(int j=0;j<i;++j){
+				double sad = dis(trip[i],trip[j]);
+				dp[i] = max(dp[i],dp[j]-sad);
 			}
-		}	
+			dp[i] += fun[i];
+		}
+		double ans = -inf;
+		fo(i,n){
+			ans = max(dp[i],ans);
+		}
+		cout<<fixed<<setprecision(7)<<ans<<endl;
     }
 }
