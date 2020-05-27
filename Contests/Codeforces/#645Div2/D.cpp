@@ -43,13 +43,48 @@ int gcd(int a,int b){
 const int N = 3e5+5;
 
 void solve(){
+    int n,x;
+    cin>>n>>x;
+    vi a(2*n+1,0);
+    loop(i,1,n+1){
+        cin>>a[i];
+        a[i+n] = a[i];
+    }
+    vi pref1(2*n+1,0);
+    vi pref2(2*n+1,0);
+    loop(i,1,2*n+1){
+        pref1[i] = pref1[i-1]+a[i];
+        pref2[i] = pref2[i-1]+a[i]*(a[i]+1)/2;
+    }
+    int maxi = 0;
+    rloop(i,2*n,n){
+        int low = 1;
+        int high = i;
+        int idx = i;
+        while (low<=high){
+            int mid = (low + high) / 2;
+            if(pref1[i]-pref1[mid-1]>=x){
+                idx = mid;
+                low = mid+1;
+            }else {
+                high = mid-1;
+            }
+            // deb(low,high,idx);
+        }
+        // deb(idx);
+        int cnt = pref1[i]-pref1[idx-1]-x;
+        int ans = pref2[i]-pref2[idx-1];
+        ans -= (cnt*(cnt+1))/2;
+        maxi = max(maxi, ans);
+    }
+    cout<<maxi<<endl;
 
 }
 
 int32_t main(){
     get_it_done();
     int tc=1;
-    cin >> tc;
+    // cin >> tc;
     while (tc--){
         solve();        
     }
