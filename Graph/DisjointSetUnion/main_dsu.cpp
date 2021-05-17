@@ -43,7 +43,7 @@ void initialize(int n){
 int find_parent(int a){
     if(parent[a]==a)
         return a;
-    return find_parent(parent[parent[a]]);
+    return parent[a] = find_parent(parent[parent[a]]);
 }
 bool isConnected(int a,int b){
     if(find_parent(a)==find_parent(b)) return true;
