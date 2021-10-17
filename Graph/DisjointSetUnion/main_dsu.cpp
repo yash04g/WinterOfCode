@@ -64,7 +64,7 @@ int make_union(int a,int b){
         parent[r_b] = r_a;
         sz[r_a] += sz[r_b];
         mx[r_a] = max(mx[r_a],mx[r_b]);
-        mn[r_a] = max(mn[r_a],mn[r_b]);
+        mn[r_a] = min(mn[r_a],mn[r_b]);
     }
     return 1;
 }
